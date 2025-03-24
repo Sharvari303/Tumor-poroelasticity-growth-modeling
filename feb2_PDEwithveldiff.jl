@@ -17,7 +17,7 @@ Dxx = Differential(x)^2
 Dyy = Differential(y)^2
 
 # ==== Load the temporal L,k,x0 csv input file =======
-df = CSV.read("/Users/sharvari/Desktop/Kyle_Vining_ABM/jan27_logistic_fit_result_mar18.csv", DataFrame)
+df = CSV.read("jan27_logistic_fit_result_mar18.csv", DataFrame)
 
 # ==== Define constant conditions for PDE solvers ======
 t_min = 0.0
@@ -106,7 +106,7 @@ domains = [
 
 # === First Solve (Outside Loop) ===
 global global_time = 0.00
-global_time_end = 19.9 #16.2 #5.4 #advection time scaled max time + 1 adv time scale
+global_time_end = 19.9  #advection time scaled max time + 1 adv time scale
 
 println("Starting first PDE solve from t = 0.0 to t = 0.4...")
 @time sol = solve(prob,TRBDF2(), dt = 0.01, saveat=0.1, verbose = true) #SSPRK54(), TRBDF2(), AutoTsit5(Rosenbrock23())
@@ -177,7 +177,6 @@ end
 
 # Ensure Pe is filename-safe
 Pe_str = replace(string(Pe), "." => "_")  # Convert "67.6" to "67_6"
-##Convert "0.4" to "0_4"
 
 #Make a gif of the solution
 anim = @animate for i=1:length(t_store)
@@ -192,7 +191,7 @@ today_date = Dates.format(Dates.now(), "yyyy-mm-dd")  # Format as YYYY-MM-DD
 #@time gif(anim, "Scenario1_$(today_date)_Pe$(Pe_str).gif", fps=5)  #####---- saving gif of resultant solution here ----####
 
 #save surface plots at time steps at selected time points.
-save_times =  [0, 0.1, 0.5, 1.6, 4.0] #, 19.2, 24.8] #[0, 0.6, 1.0, 1.6,4.0, 19.2, 24.8] 
+save_times =  [0, 0.1, 0.5, 1.6, 4.0] ##change according to Pe, Scenario run conditions 
 indices = [argmin(abs.(t_store .- t)) for t in save_times]
 
 # Save profile plots
@@ -269,7 +268,7 @@ CSV.write(filename, radial_df)
 plot()
 @time begin
     # Define specific time points to plot
-    selected_times_2 = [0,0.1, 0.3, 0.4, 1.0, 1.6]  ##1.3, 2.5, 3.5, 4.5, 5.3, 10.3, 15.3, 16.3] #[0.2, 0.4, 0.6, 0.8, 1.0]
+    selected_times_2 = [0,0.1, 0.3, 0.4, 1.0, 1.6] ##change according to Pe, Scenario run conditions 
     
     # Define colormap
     num_times = length(selected_times_2)
