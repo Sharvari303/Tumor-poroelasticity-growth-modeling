@@ -4,4 +4,6 @@
 
 2. advection-diffusion-PDE-solver.jl solves the PDE numerically and generates spatiotemporal growth factor concentration profiles under different Peclet number and Scenario runs.
 
-3. Sample PhysiCell directory used for tumro growth ABM simulations.
+3. Sigmoid plot - Cellular growth rate vs GF concentration.
+  
+4. Sample PhysiCell directory used for tumro growth ABM simulations.
