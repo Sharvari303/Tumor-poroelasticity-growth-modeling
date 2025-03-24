@@ -6,4 +6,4 @@
 
 3. Sigmoid plot - Cellular growth rate vs GF concentration.
   
-4. Sample PhysiCell directory used for tumro growth ABM simulations.
+4. Sample PhysiCell directory used for tumor growth ABM simulations.
