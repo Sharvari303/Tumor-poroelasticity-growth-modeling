@@ -17,7 +17,7 @@ Dxx = Differential(x)^2
 Dyy = Differential(y)^2
 
 # ==== Load the temporal L,k,x0 csv input file =======
-df = CSV.read("jan27_logistic_fit_result_mar18.csv", DataFrame)
+df = CSV.read("logistic_fit_result.csv", DataFrame)
 
 # ==== Define constant conditions for PDE solvers ======
 t_min = 0.0
