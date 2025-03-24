@@ -10,10 +10,10 @@ def logistic_function(r, L, k, x0):
     return L / (1 + np.exp(-k * (r - x0)))
 
 # Load the CSV file
-file_path = "/Users/sharvari/Desktop/Kyle_Vining_ABM/Convection-diffusion_setup_julia_sharvari - temporal_chem_pot_30_comp_5hrs.csv"
-#file_path = "/Users/sharvari/Downloads/Convection-diffusion_setup_julia_sharvari - temporal_chem_pot_preliminary_version.csv"
+file_path = "Convection-diffusion_setup_julia_sharvari - temporal_chem_pot_30_comp_5hrs.csv"
+#file_path = "Convection-diffusion_setup_julia_sharvari - temporal_chem_pot_preliminary_version.csv"
 data = pd.read_csv(file_path)
-mobility_data = pd.read_csv("/Users/sharvari/Desktop/Kyle_Vining_ABM/mobility_data.csv")
+mobility_data = pd.read_csv("mobility_data.csv")
 # Extract unique time points
 unique_times = data["time(min)"].unique()
 
