@@ -10,8 +10,8 @@ def logistic_function(r, L, k, x0):
     return L / (1 + np.exp(-k * (r - x0)))
 
 # Load the CSV file
-file_path = "Convection-diffusion_setup_julia_sharvari - temporal_chem_pot_30_comp_5hrs.csv"
-#file_path = "Convection-diffusion_setup_julia_sharvari - temporal_chem_pot_preliminary_version.csv"
+file_path = "Convection-diffusion_setup_julia - temporal_chem_pot_30_comp_5hrs.csv"
+#file_path = "Convection-diffusion_setup_julia - temporal_chem_pot_preliminary_version.csv"
 data = pd.read_csv(file_path)
 mobility_data = pd.read_csv("mobility_data.csv")
 # Extract unique time points
@@ -86,7 +86,7 @@ fit_df["xlog_s"]=fit_df["xlog"]/ 0.008 # Characteristic length scale X = 0.008 m
 fit_df = fit_df.round({"k": 3, "x0": 3, "R²": 3, "L_s": 3, "k_s": 3, "xlog_s": 3})
 
 # Save the updated CSV file
-csv_output_path = "/Users/sharvari/Desktop/Kyle_Vining_ABM/jan27_logistic_fit_result_mar18.csv"
+csv_output_path = "jan27_logistic_fit_result_mar18.csv"
 fit_df.to_csv(csv_output_path, index=False)
 
 # Define non-dimensionalized radius range [0, 0.5]
