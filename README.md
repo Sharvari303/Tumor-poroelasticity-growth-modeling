@@ -113,7 +113,7 @@ To reproduce tumor growth curves for a specific Péclet number (Pe):
 
 ## Data Availability
 
-All original data files and the Julia script are deposited on Dryad: **[your Dryad DOI here]**
+All original data files and the Julia script are deposited on Dryad: **[Dryad DOI here]**
 
 > **Note:** The PhysiCell working directory (`PhysiCell_directory_poroelasticity.zip`) is provided in this repository for reproducibility but is **not** included in the Dryad deposit, as PhysiCell is third-party software.
 
