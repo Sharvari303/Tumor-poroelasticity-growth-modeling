@@ -17,15 +17,21 @@ This repository contains the scripts and data required to reproduce the computat
 ### PDE Simulation (Julia)
 | File | Description |
 |------|-------------|
-| `advection_diffusion_solver.jl` | Solves the 2D advection-diffusion equation using a moving-parameter velocity field derived from poroelastic FEM simulations |
+| `advection-diffusion-PDE-solver.jl` | Solves the 2D advection-diffusion equation using a moving-parameter velocity field derived from poroelastic FEM simulations |
 | `logistic_fit_result.csv` | Time-varying velocity field parameters (input to the Julia solver) |
 
 ### Data Files
 | File | Description |
 |------|-------------|
-| `supplementary_fig4-chemicalpotentialdata.csv` | Raw chemical potential (μ) distribution across radial distances and time points during 30% compression relaxation |
-| `supplementary_fig4-logisticfit.csv` | Logistic fit parameters for spatial gradients of chemical potential; used as velocity field inputs in the PDE solver |
-| `supplementary_fig5.csv` | Temporal evolution of solid volume fraction (ϕₛ) and hydraulic permeability (K) |
+| `Convection-diffusion_setup_julia- temporal_chem_pot_30_comp_5hrs.csv` | Raw chemical potential (μ) distribution across radial distances and time points during 30% compression relaxation |
+| `logistic_fit_result.csv` | Logistic fit parameters for spatial gradients of chemical potential; used as velocity field inputs in the PDE solver |
+| `mobility_data.csv` | Temporal evolution of hydraulic permeability and mobility used in velocity derivation |
+
+### Analysis Scripts (Python)
+| File | Description |
+|------|-------------|
+| `chempotgrad.py` | Computes chemical potential gradients, estimates radial velocity profiles, and performs logistic fitting |
+| `sigmoidplot.py` | Plots the sigmoidal/Hill function used for ABM proliferation rate visualization |
 
 ### Agent-Based Model (PhysiCell)
 | File | Description |
@@ -145,11 +151,12 @@ All original data files and the Julia script are deposited on Dryad: **[Dryad DO
 
 The following files are released under the [CC0 1.0 Universal (Public Domain Dedication)](https://creativecommons.org/publicdomain/zero/1.0/) license. You may use, copy, modify, and distribute them freely without restriction.
 
-- `advection_diffusion_solver.jl`
+- `advection-diffusion-PDE-solver.jl`
 - `logistic_fit_result.csv`
-- `supplementary_fig4-chemicalpotentialdata.csv`
-- `supplementary_fig4-logisticfit.csv`
-- `supplementary_fig5.csv`
+- `Convection-diffusion_setup_julia- temporal_chem_pot_30_comp_5hrs.csv`
+- `mobility_data.csv`
+- `chempotgrad.py`
+- `sigmoidplot.py`
 
 ---
 
