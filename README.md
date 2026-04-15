@@ -1,87 +1,142 @@
-Tumor Poroelasticity Growth Modeling
+# Tumor Poroelasticity Growth Modeling
+
 This repository contains the scripts and data required to reproduce the computational results from our study on growth factor transport in mechanically compressed hydrogels, including PDE-based advection-diffusion simulations and agent-based tumor growth modeling.
 
-Repository Contents
-PDE Simulation (Julia)
+---
 
-advection_diffusion_solver.jl — Solves the 2D advection-diffusion equation using a moving-parameter velocity field derived from poroelastic FEM simulations
-logistic_fit_result.csv — Time-varying velocity field parameters (input to the Julia solver)
+## Table of Contents
+- [Repository Contents](#repository-contents)
+- [Reproducing the Results](#reproducing-the-results)
+- [Data Availability](#data-availability)
+- [License](#license)
 
-Data Files
+---
 
-supplementary_fig4-chemicalpotentialdata.csv — Raw chemical potential (μ) distribution across radial distances and time points during 30% compression relaxation
-supplementary_fig4-logisticfit.csv — Logistic fit parameters for spatial gradients of chemical potential; used as velocity field inputs in the PDE solver
-supplementary_fig5.csv — Temporal evolution of solid volume fraction (ϕₛ) and hydraulic permeability (K)
+## Repository Contents
 
-Agent-Based Model (PhysiCell)
+### PDE Simulation (Julia)
+| File | Description |
+|------|-------------|
+| `advection_diffusion_solver.jl` | Solves the 2D advection-diffusion equation using a moving-parameter velocity field derived from poroelastic FEM simulations |
+| `logistic_fit_result.csv` | Time-varying velocity field parameters (input to the Julia solver) |
 
-PhysiCell_directory_poroelasticity.zip — Reference working directory containing the PhysiCell framework and all configuration files used to reproduce the tumor growth simulations
+### Data Files
+| File | Description |
+|------|-------------|
+| `supplementary_fig4-chemicalpotentialdata.csv` | Raw chemical potential (μ) distribution across radial distances and time points during 30% compression relaxation |
+| `supplementary_fig4-logisticfit.csv` | Logistic fit parameters for spatial gradients of chemical potential; used as velocity field inputs in the PDE solver |
+| `supplementary_fig5.csv` | Temporal evolution of solid volume fraction (ϕₛ) and hydraulic permeability (K) |
 
+### Agent-Based Model (PhysiCell)
+| File | Description |
+|------|-------------|
+| `PhysiCell_directory_poroelasticity.zip` | Reference working directory containing the PhysiCell framework and all configuration files used to reproduce the tumor growth simulations |
 
-Reproducing the Results
-Figure 8 — Advection-Diffusion PDE (Julia)
-Requirements:
+---
+## Reproducing the Results
 
-Julia 1.9+
-Packages: MethodOfLines.jl, ModelingToolkit.jl, OrdinaryDiffEq.jl
-logistic_fit_result.csv must be in the same directory as the script
+### Figure 8 — Advection-Diffusion PDE (Julia)
 
-Key parameters:
+**Requirements**
+- Julia 1.9+
+- Packages: `MethodOfLines.jl`, `ModelingToolkit.jl`, `OrdinaryDiffEq.jl`
+- `logistic_fit_result.csv` must be in the same directory as the script
 
-Set Pe = 5.0 to reproduce the primary results in Figure 8
-Vary Pe between 0.22 and 220.8 to explore the diffusion-to-advection-dominated transition
+**Key Parameters**
 
-Outputs:
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `Pe` | `5.0` | Reproduces primary results in Figure 8 |
+| `Pe` range | `0.22 – 220.8` | Explores diffusion-to-advection-dominated transition |
 
-Scenario1_surfaceplots__t[TIME]_Pe5_0.png — 2D heatmaps of C/C₀ across the 8×8 mm domain (Figure 8B)
-Scenario1_radialconcprofiles_[DATE]_Pe5_0.csv — Radial concentration profiles
-Scenario2_radial_concentration_profiles_[DATE]_Pe5_0.png — C/C₀ vs. radius plot for multiple time points (Figure 8C)
+**Initial & Boundary Conditions**
+- **IC:** `u(t_min, x, y) = 1` — domain starts fully saturated with growth factor
+- **BC:** `u(t, x_min, y) = 0` — Dirichlet condition representing external sink/washout
 
+**Outputs**
 
-Figures 5, 6 & Supplementary Figure 9 — Agent-Based Model (PhysiCell)
-Requirements:
+| File | Figure | Description |
+|------|--------|-------------|
+| `Scenario1_surfaceplots__t[TIME]_Pe5_0.png` | Figure 8B | 2D heatmaps of C/C₀ across the 8×8 mm domain |
+| `Scenario1_radialconcprofiles_[DATE]_Pe5_0.csv` | — | Radial concentration profile data |
+| `Scenario2_radial_concentration_profiles_[DATE]_Pe5_0.png` | Figure 8C | C/C₀ vs. radius for multiple time points |
 
-C++ compiler with OpenMP
-PhysiCell v1.10.4 (included in PhysiCell_directory_poroelasticity.zip)
+---
 
-Setup:
+### Figures 5, 6 & Supplementary Figure 9 — Agent-Based Model (PhysiCell)
 
-Place custom.cpp in /custom_modules/
-Place PhysiCell_settings.xml and cell_rules.csv in /config/
-Compile: make
-Run: ./project ./config/PhysiCell_settings.xml (macOS/Linux)
+**Requirements**
+- C++ compiler with OpenMP
+- PhysiCell v1.10.4 (included in `PhysiCell_directory_poroelasticity.zip`)
 
-Synchronizing with PDE results:
+**Setup & Execution**
 
-Map the GF initial concentration in PhysiCell_settings.xml (under <microenvironment_setup>) to the IC used in the Julia PDE run
-Map the Dirichlet boundary conditions to the GF concentration sampled from the PDE output at the desired Pe and time point
+```bash
+# 1. Extract the zip and navigate to the root directory
+unzip PhysiCell_directory_poroelasticity.zip
+cd PhysiCell_directory_poroelasticity
 
-Biological parameters (defined in cell_rules.csv):
+# 2. Confirm file placement
+#    custom.cpp            → /custom_modules/
+#    PhysiCell_settings.xml → /config/
+#    cell_rules.csv         → /config/
 
-Max proliferation rate: 2×10⁻⁴ min⁻¹
-K₀.₅: 1×10⁻⁸ M
-Hill coefficient: 2.0
+# 3. Compile
+make
 
-Outputs:
+# 4. Run (macOS/Linux)
+./project ./config/PhysiCell_settings.xml
+```
 
-cell_populations.csv — Total, alive, and dead cell counts over 10,080 minutes (7 days)
-SVG and XML spatial snapshots every 240 minutes
+**Synchronizing with PDE Results**
 
+To reproduce tumor growth curves for a specific Péclet number (Pe):
+1. Open `PhysiCell_settings.xml` and update `<microenvironment_setup>` to match the GF initial concentration used in the corresponding Julia PDE run
+2. Set the Dirichlet boundary conditions for the GF substrate to the concentration values sampled from the PDE output at the desired Pe and time point
 
-Data Availability
-All original data files and the Julia script are deposited on Dryad: [your Dryad DOI here].
-The PhysiCell working directory (PhysiCell_directory_poroelasticity.zip) is provided in this repository only and is not included in the Dryad deposit.
+**Biological Parameters** (defined in `cell_rules.csv`)
 
-License
-Original Data & Scripts — CC0 1.0 (Public Domain)
-All data files and the Julia analysis script created for this study are released under the CC0 1.0 Universal (Public Domain Dedication) license. You may use, copy, modify, and distribute them freely without restriction.
-This includes:
+| Parameter | Value |
+|-----------|-------|
+| Max proliferation rate | 2×10⁻⁴ min⁻¹ |
+| K₀.₅ | 1×10⁻⁸ M |
+| Hill coefficient | 2.0 |
 
-advection_diffusion_solver.jl
-logistic_fit_result.csv
-supplementary_fig4-chemicalpotentialdata.csv
-supplementary_fig4-logisticfit.csv
-supplementary_fig5.csv
+**Outputs**
 
-PhysiCell & Associated Files — BSD 3-Clause License
-The PhysiCell framework (v1.10.4) and all files within PhysiCell_directory_poroelasticity.zip — including custom.cpp, PhysiCell_settings.xml, and cell_rules.csv — are distributed under the BSD 3-Clause License. See the PhysiCell repository for full license terms.
+| File | Description |
+|------|-------------|
+| `cell_populations.csv` | Total, alive, and dead cell counts over 10,080 minutes (7 days) |
+| SVG/XML snapshots | Spatial distribution of cells relative to GF gradients, saved every 240 minutes |
+
+---
+
+## Data Availability
+
+All original data files and the Julia script are deposited on Dryad: **[your Dryad DOI here]**
+
+> **Note:** The PhysiCell working directory (`PhysiCell_directory_poroelasticity.zip`) is provided in this repository for reproducibility but is **not** included in the Dryad deposit, as PhysiCell is third-party software.
+
+---
+
+## License
+
+### Original Data & Scripts — CC0 1.0 (Public Domain)
+
+[![License: CC0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+
+The following files are released under the [CC0 1.0 Universal (Public Domain Dedication)](https://creativecommons.org/publicdomain/zero/1.0/) license. You may use, copy, modify, and distribute them freely without restriction.
+
+- `advection_diffusion_solver.jl`
+- `logistic_fit_result.csv`
+- `supplementary_fig4-chemicalpotentialdata.csv`
+- `supplementary_fig4-logisticfit.csv`
+- `supplementary_fig5.csv`
+
+---
+
+### PhysiCell & Associated Files — BSD 3-Clause License
+
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
+The PhysiCell framework (v1.10.4) and all files within `PhysiCell_directory_poroelasticity.zip` — including `custom.cpp`, `PhysiCell_settings.xml`, and `cell_rules.csv` — are distributed under the **BSD 3-Clause License**. See the [PhysiCell repository](https://github.com/MathCancer/PhysiCell) for full license terms.
