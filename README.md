@@ -94,13 +94,31 @@ To reproduce tumor growth curves for a specific Péclet number (Pe):
 1. Open `PhysiCell_settings.xml` and update `<microenvironment_setup>` to match the GF initial concentration used in the corresponding Julia PDE run
 2. Set the Dirichlet boundary conditions for the GF substrate to the concentration values sampled from the PDE output at the desired Pe and time point
 
-**Biological Parameters** (defined in `cell_rules.csv`)
+**Key Variables & Parameters**
+
+The following biological parameters govern the ABM simulation. These can be 
+configured directly in PhysiCell by the user. For a complete working directory, 
+refer to `PhysiCell_directory_poroelasticity.zip`.
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| Simulation Domain | 400 µm × 400 µm | Represents Regions A and B within the larger PDE grid |
+| Grid Resolution (dx, dy) | 20 µm | Spatial discretization |
+| Initial Cell Population | 200 cells | Seeded at simulation start |
+| Simulation Time | 10,080 min | 7-day period |
+| GF Diffusion Coefficient | 100 µm²/s | Growth factor diffusion in the domain |
+| Cellular Apoptosis Rate | 5.3×10⁻⁵ min⁻¹ | Baseline cell death rate |
+
+**Cell Proliferation Function** (defined in `cell_rules.csv`)
+
+Cell growth is governed by a sigmoidal (Hill) relationship to local growth 
+factor (GF) concentration:
 
 | Parameter | Value |
 |-----------|-------|
-| Max proliferation rate | 2×10⁻⁴ min⁻¹ |
-| K₀.₅ | 1×10⁻⁸ M |
-| Hill coefficient | 2.0 |
+| Max Proliferation Rate | 2×10⁻⁴ min⁻¹ |
+| Half-max Concentration (K₀.₅) | 10⁻⁹ M |
+| Hill Coefficient | 2.0 |
 
 **Outputs**
 
